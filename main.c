@@ -27,12 +27,15 @@ int main() {
     int turn = 1;
     playerNames();
     struct boardSet *current;
+    struct boardSet *new;
     struct boardMove *move;
     setBoard();
     current = setBoard();
     printBoard(current);
     move = getmove(turn);
-    checkmove(current, *move);
+    new = checkmove(current, *move);
+    free(current);
+    current = new;
     printBoard(current);
 
     return 0;
@@ -105,6 +108,7 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
     struct boardMove checkDirection = {0,0,0};
 
     if(current->board[move.row][move.col] != '*') {
+        printf("\nCheck 7\n");
         return NULL;
     }
     new = setBoard();
@@ -112,6 +116,7 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
     for(i=-1;i<=1;i++) {
         for (j = -1; j <= 1; j++) {
             if (i != 0 || j != 0) {
+                printf("\nCheck 6\n");
                 checkDirection.row = i;
                 checkDirection.col = j;
                 new = turnPiece(new, move, &checkDirection);
@@ -120,11 +125,13 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
     }
     if(valid){
         new->board[move.row][move.col] = move.player;
-        printBoard(new);
+        printf("\nFunction running well!\n");
+        //printBoard(new);
         return new;
     }
     else {
         free(new);
+        printf("\nCheck 4\n");
         return NULL;
     }
 }
@@ -143,6 +150,7 @@ struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boa
             while(new->board[row][col] == ply && checkBounds(row,col)){
                 row += checkDirection->row;
                 col +=checkDirection->col;
+                printf("\nCheck 1\n");
             }
             if(new->board[row][col] == move.player && checkBounds(row,col) ){
                 row = move.row + checkDirection->row;
@@ -152,6 +160,7 @@ struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boa
                     new->board[row][col] = move.player;
                     row += checkDirection->row;
                     col +=checkDirection->col;
+                    printf("\nCheck 2\n");
                 }
             }
         }
@@ -160,6 +169,7 @@ struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boa
 }
 bool checkBounds (int row, int col){
     if(row <X && row >= 0 && col <Y && col >= 0){
+        printf("\nCheck 3\n");
         return true;
     }
     else{
