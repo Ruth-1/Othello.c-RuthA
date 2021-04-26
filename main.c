@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #define X 8
 #define Y 8
+bool valid = false;
 
 struct boardSet{
     char board[X][Y];
@@ -105,25 +106,52 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
     }
     new = setBoard();
     *new = *current;
-    for(i=-1;i<=1;i++){
-        for(j=-1;j<=1;j++){
-            checkDirection.row= i;
-            checkDirection.col = j;
-
+    for(i=-1;i<=1;i++) {
+        for (j = -1; j <= 1; j++) {
+            if (i != 0 || j != 0) {
+                checkDirection.row = i;
+                checkDirection.col = j;
+                new = turnPiece(new, move, &checkDirection);
+            }
         }
     }
-
-
+    if(valid){
+        new->board[move.row][move.col] = move.player;
+        printBoard(new);
+        return new;
+    }
+    else {
+        free(new);
+        return NULL;
+    }
 }
 struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boardMove *checkDirection){
     int row, col;
     char ply;
     if (move.player == 'B') {
         ply = 'W';
-    } else {
+    } else if(move.player){
         ply = 'B';
     }
     row = move.row + checkDirection->row;
     col = move.col + checkDirection->col;
-    if(row <X)
+    if(row <X && row <= 0 && col <Y && col <= 0){
+        if(new->board[row][col] == ply){
+            while(new->board[row][col] == ply && row <X && row <= 0 && col <Y && col <= 0){
+                row += checkDirection->row;
+                col +=checkDirection->col;
+            }
+            if(new->board[row][col] == move.player && row <X && row <= 0 && col <Y && col <= 0 ){
+                row = move.row + checkDirection->row;
+                col = move.col + checkDirection->col;
+                valid = true;
+                while(new->board[row][col] == ply && row <X && row <= 0 && col <Y && col <= 0){
+                    new->board[row][col] = move.player;
+                    row += checkDirection->row;
+                    col +=checkDirection->col;
+                }
+            }
+        }
+    }
+    return new;
 }
