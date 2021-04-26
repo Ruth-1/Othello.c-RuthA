@@ -38,17 +38,18 @@ int main() {
     struct boardSet *new;
     struct boardMove *move;
     current = setBoard();
+    while(boardFull(current) && doublePass(freq)){
+        printBoard(current);
 
-    printBoard(current);
-
-    do {
-        move = getmove(player);
-        new = checkmove(current, *move);
-        free(move);
-    }while(new == NULL);
-    free(current);
-    current = new;
-    printBoard(current);
+        do {
+            move = getmove(player);
+            new = checkmove(current, *move);
+            free(move);
+        } while (new == NULL);
+        free(current);
+        current = new;
+        printBoard(current);
+    }
 
     return 0;
 }
@@ -213,11 +214,20 @@ void freqInitialize(int arr[]){
 bool doublePass(int arr[]){
     for(int i=0;i<60 -1;i++){
         if(freq[i] == 1 && freq[i+1] == 1){
-            return true;
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool boardFull(struct boardSet *current){
+    for(int i = 0;i<X;i++){
+        for(int j=0;j<Y;j++){
+            if(current->board[i][j] == '*'){
+                return true;
+            }
         }
     }
     return false;
 }
-
-
-bool boardFull(struct boardSet *current);
