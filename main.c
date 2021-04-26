@@ -11,6 +11,8 @@ bool valid = false;
 int player = 1;
 int freq[60];
 int counter = 0;
+int totalBlack;
+int totalWhite;
 
 struct boardSet{
     char board[X][Y];
@@ -24,6 +26,7 @@ struct boardMove{
 void freqInitialize(int arr[]);
 bool doublePass(int arr[]);
 bool boardFull(struct boardSet *current);
+void countPieces(struct boardSet *current);
 struct boardSet *setBoard();
 struct boardMove *getmove(int turn);
 struct boardSet *checkmove (struct boardSet *current,struct boardMove move);
@@ -40,15 +43,29 @@ int main() {
     current = setBoard();
     while(boardFull(current) && doublePass(freq)){
         printBoard(current);
-
         do {
             move = getmove(player);
+            if(move->row == -1){
+                break;
+            }
             new = checkmove(current, *move);
             free(move);
         } while (new == NULL);
-        free(current);
-        current = new;
-        printBoard(current);
+        if(move->row != -1) {
+            free(current);
+            current = new;
+            printBoard(current);
+        }
+    }
+    countPieces(current);
+    if(totalWhite<totalBlack){
+        printf("\nWell Done %s! You Won with a total of %d discs!!\n" ,p1,totalBlack);
+    }
+    if(totalWhite>totalBlack){
+        printf("\nWell Done %s! You Won with a total of %d discs!!\n",p2,totalWhite);
+    }
+    if(totalWhite==totalBlack){
+        printf("\nWell Done %s and %s! It was a draw!!\n",p1,p2);
     }
 
     return 0;
@@ -114,12 +131,15 @@ struct boardMove *getmove(int turn){
         strcpy(pName,p2);
         player = 1;
     }
-    printf("%s,%s", p1, "enter your move in the format 1-8 for your "
-                "desired row and a-h for your desired column\n");
-    scanf("%d" ,&row);
-    move->row = row - 1;
-    scanf(" %c" ,&col);
-    move->col = col - 'a';
+    do {
+        printf("%s,%s", pName, "enter your move in the format 1-8 for your "
+                               "desired row and a-h for your desired column\n");
+        printf("If you wish to pass please enter 0 for your desired row and column.\n");
+        scanf("%d", &row);
+        move->row = row - 1;
+        scanf(" %c", &col);
+        move->col = col - 'a';
+    }while(move->row > 7 || move ->row < -1 || move-> col > 7 || move-> col < '0' - 'a');
     if(move->row == -1){
         freq[counter] = 1;
     }
@@ -230,4 +250,18 @@ bool boardFull(struct boardSet *current){
         }
     }
     return false;
+}
+void countPieces(struct boardSet *current){
+    totalBlack=0;
+    totalWhite=0;
+    for(int i = 0;i<X;i++){
+        for(int j=0;j<Y;j++){
+            if(current->board[i][j] == 'B'){
+                totalBlack++;
+            }
+            if(current->board[i][j] == 'W'){
+                totalWhite++;
+            }
+        }
+    }
 }
