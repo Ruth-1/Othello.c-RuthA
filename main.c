@@ -4,18 +4,18 @@
 #define X 8
 #define Y 8
 
-
 struct boardSet{
     char board[X][Y];
 };
 struct boardMove{
     int row;
     int col;
-    int player;
+    char player;
 };
 struct boardSet *setBoard();
 struct boardMove *getmove(int turn);
-int checkmove(struct boardSet *current,struct boardMove *move);
+struct boardSet *checkmove (struct boardSet *current,struct boardMove move);
+struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boardMove *checkDirection);
 void printBoard(struct boardSet *current);
 void playerNames();
 int main() {
@@ -79,18 +79,51 @@ struct boardMove *getmove(int turn){
     new->row = row -1;
     scanf("%c" ,&col);
     new->col = col - 'a';
-    new->player = turn;
+    if(turn == 1){
+        new->player = 'B';
+    }
+    else if(turn == 2){
+        new->player = 'W';
+    }
+
     return(new);
 }
-int checkmove(struct boardSet *current,struct boardMove *move){
-    int i,j;
-    bool dirLeft = true;
-    bool dirRight = true;
-    bool dirUp = true;
-    bool dirDown = true;
-    bool diDiaU = true;
-    bool dirDiaD = true;
-    for(i=move->col;i<X;i++){
-        if(current->board[move->row][i])
+struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
+    int i, j;
+    char ply;
+    struct boardSet *new;
+    new = malloc(sizeof(struct boardSet));
+    struct boardMove checkDirection;
+
+    if (move.player == 'B') {
+        ply = 'W';
+    } else {
+        ply = 'B';
     }
+    if(current->board[move.row][move.col] != '*') {
+        return NULL;
+    }
+    new = setBoard();
+    *new = *current;
+    for(i=-1;i<=1;i++){
+        for(j=-1;j<=1;j++){
+            checkDirection.row= i;
+            checkDirection.col = j;
+
+        }
+    }
+
+
+}
+struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boardMove *checkDirection){
+    int row, col;
+    char ply;
+    if (move.player == 'B') {
+        ply = 'W';
+    } else {
+        ply = 'B';
+    }
+    row = move.row + checkDirection->row;
+    col = move.col + checkDirection->col;
+    if(row <X)
 }
