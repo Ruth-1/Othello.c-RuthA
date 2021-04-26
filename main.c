@@ -2,20 +2,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#define LEN 20
 #define X 8
 #define Y 8
-char p1[20];
-char p2[20];
+char p1[LEN];
+char p2[LEN];
 bool valid = false;
 
 struct boardSet{
     char board[X][Y];
 };
+
 struct boardMove{
     int row;
     int col;
     char player;
 };
+
 struct boardSet *setBoard();
 struct boardMove *getmove(int turn);
 struct boardSet *checkmove (struct boardSet *current,struct boardMove move);
@@ -32,8 +35,12 @@ int main() {
     setBoard();
     current = setBoard();
     printBoard(current);
-    move = getmove(turn);
-    new = checkmove(current, *move);
+
+    do {
+        move = getmove(turn);
+        new = checkmove(current, *move);
+        free(move);
+    }while(new == NULL);
     free(current);
     current = new;
     printBoard(current);
@@ -72,17 +79,24 @@ void printBoard(struct boardSet *current){
     }
 }
 void playerNames(){
+    int len;
     printf("*** Welcome to Othello! ***\n");
     printf("Enter name of Player 1 (Black):\n");
-    fgets(p1,20,stdin);
+    fgets(p1,LEN,stdin);
+    len = strlen(p1);
+    if(p1[len-1] == '\n' )
+        p1[len-1] = 0;
     printf("Enter name of Player 2 (White):\n");
-    fgets(p2,20,stdin);
+    fgets(p2,LEN,stdin);
+    len = strlen(p2);
+    if(p2[len-1] == '\n' )
+        p2[len-1] = 0;
 }
 struct boardMove *getmove(int turn){
     struct boardMove *move;
     char col;
     int row;
-    char pName[20];
+    char pName[LEN];
     move = malloc(sizeof(struct boardMove));
     if(turn == 1){
         move->player = 'B';
@@ -126,7 +140,6 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
     if(valid){
         new->board[move.row][move.col] = move.player;
         printf("\nFunction running well!\n");
-        //printBoard(new);
         return new;
     }
     else {
