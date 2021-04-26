@@ -8,6 +8,9 @@
 char p1[LEN];
 char p2[LEN];
 bool valid = false;
+int player = 1;
+int freq[60];
+int counter = 0;
 
 struct boardSet{
     char board[X][Y];
@@ -18,7 +21,9 @@ struct boardMove{
     int col;
     char player;
 };
-
+void freqInitialize(int arr[]);
+bool doublePass(int arr[]);
+bool boardFull(struct boardSet *current);
 struct boardSet *setBoard();
 struct boardMove *getmove(int turn);
 struct boardSet *checkmove (struct boardSet *current,struct boardMove move);
@@ -27,17 +32,17 @@ bool checkBounds (int row, int col);
 void printBoard(struct boardSet *current);
 void playerNames();
 int main() {
-    int turn = 1;
+    freqInitialize(freq);
     playerNames();
     struct boardSet *current;
     struct boardSet *new;
     struct boardMove *move;
-    setBoard();
     current = setBoard();
+
     printBoard(current);
 
     do {
-        move = getmove(turn);
+        move = getmove(player);
         new = checkmove(current, *move);
         free(move);
     }while(new == NULL);
@@ -101,10 +106,12 @@ struct boardMove *getmove(int turn){
     if(turn == 1){
         move->player = 'B';
         strcpy(pName,p1);
+        player = 2;
     }
     else if(turn == 2){
         move->player = 'W';
         strcpy(pName,p2);
+        player = 1;
     }
     printf("%s,%s", p1, "enter your move in the format 1-8 for your "
                 "desired row and a-h for your desired column\n");
@@ -112,6 +119,13 @@ struct boardMove *getmove(int turn){
     move->row = row - 1;
     scanf(" %c" ,&col);
     move->col = col - 'a';
+    if(move->row == -1){
+        freq[counter] = 1;
+    }
+    else{
+        freq[counter] = 0;
+    }
+    counter++;
     printf("\n Function running well.\n");
     printf("%d:row; %d:column.\n" ,move->row, move->col);
     return move;
@@ -189,3 +203,21 @@ bool checkBounds (int row, int col){
         return false;
     }
 }
+
+void freqInitialize(int arr[]){
+    for(int i=0;i<60;i++){
+        freq[i] = 0;
+    }
+}
+
+bool doublePass(int arr[]){
+    for(int i=0;i<60 -1;i++){
+        if(freq[i] == 1 && freq[i+1] == 1){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+bool boardFull(struct boardSet *current);
