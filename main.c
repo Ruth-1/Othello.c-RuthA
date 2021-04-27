@@ -41,21 +41,20 @@ int main() {
     struct boardSet *new;
     struct boardMove *move;
     current = setBoard();
+    printBoard(current);
     while(boardFull(current) && doublePass(freq)){
-        printBoard(current);
         do {
+            valid = false;
             move = getmove(player);
-            if(move->row == -1){
+            if(move->row == -1 && move->col == '0' - 'a'){
                 break;
             }
             new = checkmove(current, *move);
             free(move);
         } while (new == NULL);
-        if(move->row != -1) {
-            free(current);
-            current = new;
-            printBoard(current);
-        }
+        free(current);
+        current = new;
+        printBoard(current);
     }
     countPieces(current);
     if(totalWhite<totalBlack){
@@ -121,15 +120,14 @@ struct boardMove *getmove(int turn){
     int row;
     char pName[LEN];
     move = malloc(sizeof(struct boardMove));
+    printf("\nTURN IS: %d\n" ,turn);
     if(turn == 1){
         move->player = 'B';
         strcpy(pName,p1);
-        player = 2;
     }
     else if(turn == 2){
         move->player = 'W';
         strcpy(pName,p2);
-        player = 1;
     }
     do {
         printf("%s,%s", pName, "enter your move in the format 1-8 for your "
@@ -140,6 +138,14 @@ struct boardMove *getmove(int turn){
         scanf(" %c", &col);
         move->col = col - 'a';
     }while(!(checkBounds(row - 1,col - 'a')) && !(row  == 0 && col == '0' ));
+    if(row  == 0 && col == '0' ){
+        if(turn == 1){
+            player = 2;
+        }
+        else if(turn == 2){
+            player = 1;
+        }
+    }
     if(move->row == -1){
         freq[counter] = 1;
     }
@@ -148,7 +154,7 @@ struct boardMove *getmove(int turn){
     }
     counter++;
     printf("\n Function running well.\n");
-    printf("%d:row; %d:column.\n" ,move->row, move->col);
+    printf(" FROM GET MOVE :%d:row; %d:column.\n" ,move->row, move->col);
     return move;
 }
 struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
@@ -169,12 +175,19 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
                 checkDirection.row = i;
                 checkDirection.col = j;
                 new = turnPiece(new, move, &checkDirection);
+                printf("\nCHECK DIRECTIONS Row:%d, Column:%d\n" ,move.row+i,move.col+j);
             }
         }
     }
     if(valid){
         new->board[move.row][move.col] = move.player;
         printf("\nFunction running well!\n");
+        if(move.player == 'B'){
+            player = 2;
+        }
+        else if(move.player == 'W'){
+            player = 1;
+        }
         return new;
     }
     else {
@@ -188,26 +201,29 @@ struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boa
     char ply;
     if (move.player == 'B') {
         ply = 'W';
-    } else if(move.player){
+    }
+    if(move.player == 'W'){
         ply = 'B';
     }
     row = move.row + checkDirection->row;
     col = move.col + checkDirection->col;
     if(checkBounds(row,col)){
         if(new->board[row][col] == ply){
+            printf("\nOTHERS OPPS Row:%d, Column:%d\n" ,row,col);
             while(new->board[row][col] == ply && checkBounds(row,col)){
                 row += checkDirection->row;
                 col +=checkDirection->col;
                 printf("\nCheck 1\n");
+                printf("\nOTHERS OPPS NESTED Row:%d, Column:%d\n" ,row,col);
             }
             if(new->board[row][col] == move.player && checkBounds(row,col) ){
                 row = move.row + checkDirection->row;
                 col = move.col + checkDirection->col;
-                valid = true;
                 while(new->board[row][col] == ply && checkBounds(row,col)){
                     new->board[row][col] = move.player;
                     row += checkDirection->row;
                     col +=checkDirection->col;
+                    valid = true;
                     printf("\nCheck 2\n");
                 }
             }
