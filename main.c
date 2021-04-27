@@ -139,7 +139,7 @@ struct boardMove *getmove(int turn){
         move->row = row - 1;
         scanf(" %c", &col);
         move->col = col - 'a';
-    }while(move->row > 7 || move ->row < -1 || move-> col > 7 || move-> col < '0' - 'a');
+    }while(!(checkBounds(row - 1,col - 'a')) && !(row  == 0 && col == '0' ));
     if(move->row == -1){
         freq[counter] = 1;
     }
