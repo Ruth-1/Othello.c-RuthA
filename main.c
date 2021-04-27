@@ -52,9 +52,11 @@ int main() {
             new = checkmove(current, *move);
             free(move);
         } while (new == NULL);
-        free(current);
-        current = new;
-        printBoard(current);
+        if(move->row != -1 && move->col != '0' - 'a'){
+            free(current);
+            current = new;
+            printBoard(current);
+        }
     }
     countPieces(current);
     if(totalWhite<totalBlack){
