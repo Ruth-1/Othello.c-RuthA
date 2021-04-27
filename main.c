@@ -146,13 +146,11 @@ struct boardMove *getmove(int turn){
             player = 1;
         }
     }
-    if(move->row == -1){
+    if(move->row == -1 && move->col == '0' - 'a'){
         freq[counter] = 1;
+        counter++;
     }
-    else{
-        freq[counter] = 0;
-    }
-    counter++;
+
     printf("\n Function running well.\n");
     printf(" FROM GET MOVE :%d:row; %d:column.\n" ,move->row, move->col);
     return move;
@@ -188,7 +186,10 @@ struct boardSet *checkmove(struct boardSet *current,struct boardMove move) {
         else if(move.player == 'W'){
             player = 1;
         }
+        freq[counter] = 0;
+        counter++;
         return new;
+
     }
     else {
         free(new);
