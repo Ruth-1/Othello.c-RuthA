@@ -48,7 +48,7 @@ struct boardMove *getmove(int turn,struct boardSet *current){
     }
     do {
         passValid = true;
-        printf("%s,%s", pName, "enter your move in the format a-h for your "
+        printf("\n%s,%s", pName, "enter your move in the format a-h for your "
                                "desired column and 1-8 for your desired row\n");
         printf("If you wish to pass please enter p and enter.\n");
         scanf("%1c", &col);

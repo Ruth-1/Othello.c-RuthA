@@ -6,10 +6,10 @@
 #include <stdbool.h>
 #include "globalVar.h"
 #include <stdio.h>
+#include "voidFunc.h"
 #define LEN 20
 #define X 8
 #define Y 8
-bool passValid = true;
 bool checkBounds (int row, int col){
     if(row <X && row >= 0 && col <Y && col >= 0){
         //  printf("\nCheck 3\n");
@@ -65,45 +65,6 @@ bool validPass(int playerp,struct boardSet *current){
     return true;
 }
 
-void checkPass(int row, int col,struct boardSet *current,char ply){
-    int i,j,checkRow,checkCol,row2,col2;
-    char otherPly;
-    if(ply == 'B'){
-        otherPly = 'W';
-    }
-    if(ply == 'W'){
-        otherPly = 'B';
-    }
-    for(i=-1;i<=1;i++) {
-        for (j = -1; j <= 1; j++) {
-            if (i != 0 || j != 0) {
-                // printf("\nCheck 6\n");
-                checkRow = i;
-                checkCol = j;
-                // printf("\nCHECK DIRECTIONS Row:%d, Column:%d\n" ,move.row+i,move.col+j);
-
-                row2 = row + checkRow;
-                col2 = col + checkCol;
-                if(checkBounds(row2,col2)){
-                    if(current->board[row2][col2] == otherPly){
-                //printf("\nOTHERS OPPS Row:%d, Column:%d\n" ,row,col);
-                        while(current->board[row2][col2] == otherPly && checkBounds(row2,col2)){
-                            row2 += checkRow;
-                            col2 +=checkCol;
-                    //   printf("\nCheck 1\n");
-                    //  printf("\nOTHERS OPPS NESTED Row:%d, Column:%d\n" ,row,col);
-                        }
-                        if(current->board[row2][col2] == '*' && checkBounds(row2,col2) ){
-                            passValid = false;
-                            char colchar = col2 + 'a';
-                            printf("\nInvalid Pass:Valid move at column:%c row:%d\n",colchar,row2+1);
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 bool pieceExist(struct boardSet *current){
     int checkB = 0;
