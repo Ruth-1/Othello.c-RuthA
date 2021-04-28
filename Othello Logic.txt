@@ -1,0 +1,27 @@
+The Thought Process Behind my Code
+
+Implemention of the Board
+I decided to use a struct that contained a 2D char array to hold the information for each board space
+I used the character '*' to symbolise a blank space on the board - ie one not occupied by a white/black disks
+I first initialised my board struct to be be all 'blank spaces' except for the four mandatory spaces that had to be filled with two white and two black pieces.
+
+Implementation of the Players
+When asking the users to input their names I automatically assigned the first player to be black and the second player to be white.
+I take the user names and store them in global char array variables so I can use their names in multiple functions.
+
+Implementation of the discs
+I implemented the discs by using the character 'B' and 'W' to represent a black disc and white disc repectively. If a move is seen as valid I would then change the '*' symbol to whatever character (either 'B' or 'W') that the move dictates.
+
+Implementation of a move
+I used another struct to store the move inputted by the player and to store the current player information. I took in the users move in the format a1 where a can be between a-h (to represent the columns) and 1 can be between 1-8 (to represent the rows) I then stored these characters in temporary variables and then translated them to their correct array index notation.
+
+Game Logic
+The game started of with player 1 (black) going first.
+I took in a move as described above and checked to see if it was valid.
+To check if it was valid I 
+
+
+
+
+
+
