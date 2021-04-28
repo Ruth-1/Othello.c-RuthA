@@ -9,6 +9,6 @@
 bool doublePass(int arr[]);
 bool boardFull(struct boardSet *current);
 bool checkBounds (int row, int col);
-bool validPass(int playerp,struct boardSet *current);
+bool validPass(int playerP,struct boardSet *current);
 bool pieceExist(struct boardSet *current);
 #endif //OTHELLO_BOOLFUNC_H

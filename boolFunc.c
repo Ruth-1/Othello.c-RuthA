@@ -5,14 +5,12 @@
 #include "boolFunc.h"
 #include <stdbool.h>
 #include "globalVar.h"
-#include <stdio.h>
 #include "voidFunc.h"
 #define LEN 20
 #define X 8
 #define Y 8
 bool checkBounds (int row, int col){
     if(row <X && row >= 0 && col <Y && col >= 0){
-        //  printf("\nCheck 3\n");
         return true;
     }
     else{
@@ -41,13 +39,13 @@ bool boardFull(struct boardSet *current){
     }
     return false;
 }
-bool validPass(int playerp,struct boardSet *current){
+bool validPass(int playerP,struct boardSet *current){
     if(pieceExist(current)) {
         char ply;
-        if (playerp == 1) {
+        if (playerP == 1) {
             ply = 'B';
         }
-        if (playerp == 2) {
+        if (playerP == 2) {
             ply = 'W';
         }
         for (int i = 0; i < X; i++) {

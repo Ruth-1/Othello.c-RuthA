@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "globalVar.h"
-#include "boolFunc.h"
 int totalWhite = 0;
 int totalBlack = 0;
 char p1[LEN];
@@ -42,7 +41,7 @@ void playerNames(){
         p2[len-1] = 0;
 }
 
-void freqInitialize(int arr[]){
+void freqInitialize(){
     for(int i=0;i<60;i++){
         freq[i] = 0;
     }
@@ -75,26 +74,20 @@ void checkPass(int row, int col,struct boardSet *current,char ply){
     for(i=-1;i<=1;i++) {
         for (j = -1; j <= 1; j++) {
             if (i != 0 || j != 0) {
-                // printf("\nCheck 6\n");
                 checkRow = i;
                 checkCol = j;
-                // printf("\nCHECK DIRECTIONS Row:%d, Column:%d\n" ,move.row+i,move.col+j);
-
                 row2 = row + checkRow;
                 col2 = col + checkCol;
                 if(checkBounds(row2,col2)){
                     if(current->board[row2][col2] == otherPly){
-                        //printf("\nOTHERS OPPS Row:%d, Column:%d\n" ,row,col);
                         while(current->board[row2][col2] == otherPly && checkBounds(row2,col2)){
                             row2 += checkRow;
                             col2 +=checkCol;
-                            //   printf("\nCheck 1\n");
-                            //  printf("\nOTHERS OPPS NESTED Row:%d, Column:%d\n" ,row,col);
                         }
                         if(current->board[row2][col2] == '*' && checkBounds(row2,col2) ){
                             passValid = false;
-                            char colchar = col2 + 'a';
-                            printf("\nInvalid Pass:Valid move at column:%c row:%d\n",colchar,row2+1);
+                            char colChar = col2 + 'a';
+                            printf("\nInvalid Pass:Valid move at column:%c row:%d\n",colChar,row2+1);
                         }
                     }
                 }
