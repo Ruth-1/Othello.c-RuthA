@@ -9,6 +9,7 @@
 extern char p1[LEN];
 extern char p2[LEN];
 extern bool valid;
+extern bool passValid;
 extern int player;
 extern int freq[60];
 extern int counter;
