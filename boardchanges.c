@@ -29,7 +29,7 @@ struct boardSet *setBoard(){
     return new;
 }
 
-struct boardMove *getmove(int turn){
+struct boardMove *getmove(int turn,struct boardSet *current){
     struct boardMove *move;
     char col;
     char rowtemp;
@@ -47,6 +47,7 @@ struct boardMove *getmove(int turn){
         strcpy(pName,p2);
     }
     do {
+        passValid = true;
         printf("%s,%s", pName, "enter your move in the format a-h for your "
                                "desired column and 1-8 for your desired row\n");
         printf("If you wish to pass please enter p and enter.\n");
@@ -61,8 +62,8 @@ struct boardMove *getmove(int turn){
             scanf("%c" ,&buffer);
         }
         move->row = row - 1;
-    }while(!(checkBounds(row - 1,col - 'a')) && !(col == 'p' && row == 0));
-    if(col == 'p' && row == 0){
+    }while(!(checkBounds(row - 1,col - 'a')) && !((col == 'p' && row == 0) && (validPass(turn,current))));
+    if((col == 'p' && row == 0) && passValid){
         if(turn == 1){
             player = 2;
         }
@@ -70,7 +71,7 @@ struct boardMove *getmove(int turn){
             player = 1;
         }
     }
-    if(col == 'p'){
+    if((col == 'p' && row == 0) && passValid){
         freq[counter] = 1;
         counter++;
     }

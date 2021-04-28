@@ -16,7 +16,7 @@ struct boardMove{
     char player;
 };
 struct boardSet *setBoard();
-struct boardMove *getmove(int turn);
+struct boardMove *getmove(int turn,struct boardSet *current);
 struct boardSet *checkmove (struct boardSet *current,struct boardMove move);
 struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boardMove *checkDirection);
 

@@ -43,7 +43,7 @@ int main() {
     while(boardFull(current) && doublePass(freq)){
         do {
             valid = false;
-            move = getmove(player);
+            move = getmove(player,current);
             if(move->col == 'p' - 'a'&& move->row == -1){
                 break;
             }
