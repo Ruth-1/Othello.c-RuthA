@@ -32,6 +32,8 @@ struct boardSet *setBoard(){
 struct boardMove *getmove(int turn){
     struct boardMove *move;
     char col;
+    char rowtemp;
+    char buffer;
     int row;
     char pName[LEN];
     move = malloc(sizeof(struct boardMove));
@@ -45,15 +47,22 @@ struct boardMove *getmove(int turn){
         strcpy(pName,p2);
     }
     do {
-        printf("%s,%s", pName, "enter your move in the format 1-8 for your "
-                               "desired row and a-h for your desired column\n");
-        printf("If you wish to pass please enter 0 for your desired row and column.\n");
-        scanf("%d", &row);
-        move->row = row - 1;
-        scanf(" %c", &col);
+        printf("%s,%s", pName, "enter your move in the format a-h for your "
+                               "desired column and 1-8 for your desired row\n");
+        printf("If you wish to pass please enter p and enter.\n");
+        scanf("%1c", &col);
         move->col = col - 'a';
-    }while(!(checkBounds(row - 1,col - 'a')) && !(row  == 0 && col == '0' ));
-    if(row  == 0 && col == '0' ){
+        scanf("%1c", &rowtemp);
+        if(col == 'p'&& rowtemp == '\n'){
+            row = 0;
+        }
+        if(rowtemp != '\n'){
+            row = (rowtemp - '0');
+            scanf("%c" ,&buffer);
+        }
+        move->row = row - 1;
+    }while(!(checkBounds(row - 1,col - 'a')) && !(col == 'p' && row == 0));
+    if(col == 'p' && row == 0){
         if(turn == 1){
             player = 2;
         }
@@ -61,7 +70,7 @@ struct boardMove *getmove(int turn){
             player = 1;
         }
     }
-    if(move->row == -1 && move->col == '0' - 'a'){
+    if(col == 'p'){
         freq[counter] = 1;
         counter++;
     }

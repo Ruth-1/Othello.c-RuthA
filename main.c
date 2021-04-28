@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
 #include "boolFunc.h"
 #include "boardchanges.h"
 #include "voidFunc.h"
@@ -45,13 +44,13 @@ int main() {
         do {
             valid = false;
             move = getmove(player);
-            if(move->row == -1 && move->col == '0' - 'a'){
+            if(move->col == 'p' - 'a'&& move->row == -1){
                 break;
             }
             new = checkmove(current, *move);
             free(move);
         } while (new == NULL);
-        if(move->row != -1 && move->col != '0' - 'a'){
+        if(move->row != -1 && move->col != 'p' - 'a'){
             free(current);
             current = new;
             printBoard(current);
