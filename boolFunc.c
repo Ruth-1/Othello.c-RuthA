@@ -9,6 +9,7 @@
 #define LEN 20
 #define X 8
 #define Y 8
+#define PLAYS 60
 bool checkBounds (int row, int col){
     if(row <X && row >= 0 && col <Y && col >= 0){
         return true;
@@ -20,7 +21,7 @@ bool checkBounds (int row, int col){
 
 
 bool doublePass(int arr[]){
-    for(int i=0;i<60 -1;i++){
+    for(int i=0;i<PLAYS -1;i++){
         if(freq[i] == 1 && freq[i+1] == 1){
             return false;
         }
