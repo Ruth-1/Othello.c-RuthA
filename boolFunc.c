@@ -9,7 +9,7 @@
 #define LEN 20
 #define X 8
 #define Y 8
-#define PLAYS 60
+#define PLAYS 60//max number of plays
 bool checkBounds (int row, int col){//checks if the inputted row and column are in the bound of the board
     if(row <X && row >= 0 && col <Y && col >= 0){//the row and column both have to be less that 8 and greater than 0
         return true;
