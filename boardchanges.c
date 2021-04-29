@@ -122,7 +122,7 @@ struct boardSet *checkMove(struct boardSet *current,struct boardMove move) {//fu
         return NULL;
     }
 }
-struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boardMove *checkDirection){//checks if
+struct boardSet *turnPiece(struct boardSet *new,struct boardMove move,struct boardMove *checkDirection){//checks if a
     // move is valid and if it is,flips the corresponding discs
     int row, col;
     char ply;
