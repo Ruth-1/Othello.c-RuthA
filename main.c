@@ -31,7 +31,7 @@ int main() {
                 // loop and move onto next player
                 break;
             }
-            new = checkMove(current, *move);//else if move is valid and not a pass checkmove returns a new board
+            new = checkMove(current, *move);//else if move is valid and not a pass checkMove returns a new board
             // after players move has been processed
             free(move);//free the memory
         } while (new == NULL);//loop while the move entered is invalid
