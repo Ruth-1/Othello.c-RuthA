@@ -49,16 +49,16 @@ void freqInitialize(){//initializes freq array to all 0 to avoid errors
 }
 
 
-void countPieces(struct boardSet *current){//counts pieces
+void countPieces(struct boardSet *current){//counts discs
     totalBlack=0;//start at 0
     totalWhite=0;//start at 0
     for(int i = 0;i<X;i++){//iterates through rows
         for(int j=0;j<Y;j++){//iterates through columns
             if(current->board[i][j] == 'B'){
-                totalBlack++;//if we see a black piece increment totalBlack
+                totalBlack++;//if we see a black disc increment totalBlack
             }
             if(current->board[i][j] == 'W'){
-                totalWhite++;//if we see a white piece increment totalWhite
+                totalWhite++;//if we see a white disc increment totalWhite
             }
         }
     }
@@ -67,28 +67,38 @@ void checkPass(int row, int col,struct boardSet *current,char ply){//checks if a
     int i,j,checkRow,checkCol,row2,col2;
     char otherPly;
     if(ply == 'B'){
-        otherPly = 'W';//if current player is Black t set other Player to White and vice versa
+        otherPly = 'W';//if current player is Black set other Player to White and vice versa
     }
     if(ply == 'W'){
         otherPly = 'B';
     }
-    for(i=-1;i<=1;i++) {
-        for (j = -1; j <= 1; j++) {
-            if (i != 0 || j != 0) {
-                checkRow = i;
-                checkCol = j;
-                row2 = row + checkRow;
-                col2 = col + checkCol;
-                if(checkBounds(row2,col2)){
-                    if(current->board[row2][col2] == otherPly){
-                        while(current->board[row2][col2] == otherPly && checkBounds(row2,col2)){
-                            row2 += checkRow;
-                            col2 +=checkCol;
+    for(i=-1;i<=1;i++) {//used to manipulate row positions
+        for (j = -1; j <= 1; j++) {//used to manipulate column positions
+            if (i != 0 || j != 0) {//only enter code if at least one manipulation is taking place otherwise we
+                // cannot check validation of the pass
+                checkRow = i; //set checkRow to i
+                checkCol = j; //set checkCol to j
+                //row and col are passed in by another function that iterates through the board and returns the
+                // position of any of the current players discs
+                row2 = row + checkRow;//set row2 to a manipulated position either 1 higher 1 lower or the same
+                col2 = col + checkCol;//set col2 to a manipulated position either 1 higher 1 lower or the same
+                if(checkBounds(row2,col2)){//if the manipulated position is still in the bounds of the board continue
+                    if(current->board[row2][col2] == otherPly){//if the position has the other players disc on it
+                        //then continue
+                        while(current->board[row2][col2] == otherPly && checkBounds(row2,col2)){//while we are still
+                            // on a position that has the other players disc on it and we are still in the bounds of
+                            // the board
+                            row2 += checkRow;//continue to move further in the manipulated direction
+                            col2 +=checkCol;//continue to move further in the manipulated position
                         }
-                        if(current->board[row2][col2] == '*' && checkBounds(row2,col2) ){
-                            passValid = false;
-                            char colChar = col2 + 'a';
-                            printf("\nInvalid Pass:Valid move at column:%c row:%d\n",colChar,row2+1);
+                        if(current->board[row2][col2] == '*' && checkBounds(row2,col2) ){//once we exit that loop we
+                            // have either encountered a blank space or we are out of bounds
+                            //if we are not out of bounds ie we have entered a blank space then it is not a valid pass
+                            passValid = false;//set passValid to false
+                            char colChar = col2 + 'a';//used to print out users version of column
+                            printf("\nInvalid Pass:Valid move at column:%c row:%d\n",colChar,row2+1);//inform user of
+                            // the invalid pass and tell them the moves they can make in the users version of the
+                            // board notation
                         }
                     }
                 }
