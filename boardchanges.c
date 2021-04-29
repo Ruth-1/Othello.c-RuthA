@@ -61,6 +61,9 @@ struct boardMove *getMove(int turn,struct boardSet *current){
             scanf("%c" ,&buffer);
         }
         move->row = row - 1;
+        if(!checkBounds(row - 1,col - 'a') && !(col == 'p' && row == 0)){
+            printf("\nInvalid Move.\n");
+        }
     }while(!(checkBounds(row - 1,col - 'a')) && !((col == 'p' && row == 0) && (validPass(turn,current))));
     if((col == 'p' && row == 0) && passValid){
         if(turn == 1){
@@ -83,6 +86,7 @@ struct boardSet *checkMove(struct boardSet *current,struct boardMove move) {
     struct boardMove checkDirection = {0,0,0};
 
     if(current->board[move.row][move.col] != '*') {
+        printf("\nInvalid Move.\n");
         return NULL;
     }
     new = setBoard();
@@ -110,6 +114,7 @@ struct boardSet *checkMove(struct boardSet *current,struct boardMove move) {
 
     }
     else {
+        printf("\nInvalid Move.\n");
         free(new);
         return NULL;
     }

@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "boolFunc.h"
-#include "voidFunc.h"
+#include <stdio.h>//used for functions such as printf
+#include <stdlib.h> //used for dynamic memory allocation
+#include <stdbool.h>//used for booleans
+#include "boolFunc.h"//contains bool functons
+#include "voidFunc.h"//
 #include "globalVar.h"
 #include <time.h>
 #include "string.h"
@@ -36,6 +36,9 @@ int main() {
             current = new;
             printBoard(current);
         }
+        countPieces(current);
+        printf("\n%s has a a total of %d discs.\n",p1,totalBlack);
+        printf("\n%s has a a total of %d discs.\n",p2,totalWhite);
     }
     countPieces(current);
     fptr= fopen("othello-results.txt","w");
@@ -50,12 +53,12 @@ int main() {
 
     if(totalWhite<totalBlack){
         printf("\nWell Done %s! You Won with a total of %d discs!!\n" ,p1,totalBlack);
-        fprintf(fptr,"%s",strcat(p1,"won with a disc total of:"));
+        fprintf(fptr,"%s",strcat(p1," won with a disc total of:"));
         fprintf(fptr, "%d" ,totalBlack);
     }
     if(totalWhite>totalBlack){
         printf("\nWell Done %s! You Won with a total of %d discs!!\n",p2,totalWhite);
-        fprintf(fptr,"%s",strcat(p2,"won with a disc total of: "));
+        fprintf(fptr,"%s",strcat(p2," won with a disc total of: "));
         fprintf(fptr, "%d" ,totalWhite);
     }
     if(totalWhite==totalBlack){
