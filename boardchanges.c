@@ -65,6 +65,7 @@ struct boardMove *getMove(int turn,struct boardSet *current){
             printf("\nInvalid Move.\n");
         }
     }while(!(checkBounds(row - 1,col - 'a')) && !((col == 'p' && row == 0) && (validPass(turn,current))));
+
     if((col == 'p' && row == 0) && passValid){
         if(turn == 1){
             player = 2;
